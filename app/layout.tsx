@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ConvexClientProvider from "@/providers/ConvexClientProvider";
+import { auth } from "@clerk/nextjs/server";
+import { Suspense } from "react";
+import Loading from "./loading"
+import { SignIn } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +19,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = auth().userId; // Fetch user information
+  !user && auth().redirectToSignIn()
   return (
+    
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Suspense fallback={<Loading/>}>
+          <ConvexClientProvider>
+          {children}
+          </ConvexClientProvider>
+          </Suspense>
+        </body>
     </html>
   );
 }
