@@ -6,6 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 import Loading from "./loading"
 import { SignIn } from "@clerk/nextjs";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Suspense fallback={<Loading/>}>
           <ConvexClientProvider>
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
           </ConvexClientProvider>
           </Suspense>
         </body>
